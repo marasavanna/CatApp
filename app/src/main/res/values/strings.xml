@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CatApp</string>
+
+    <string name="breed_details_country_code">Country code: %1$s</string>
+    <string name="breed_details_temperament">Temperament: %1$s</string>
+    <string name="breed_details_wiki_link">See more on Wikipedia</string>
+</resources>

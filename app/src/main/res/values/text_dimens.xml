@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- General -->
+
+    <dimen name="title">20sp</dimen>
+    <dimen name="subtitle">18sp</dimen>
+    <dimen name="large_body">16sp</dimen>
+    <dimen name="body">14sp</dimen>
+
+</resources>

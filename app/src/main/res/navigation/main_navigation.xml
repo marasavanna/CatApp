@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/catBreedsFragment">
+
+    <fragment
+        android:id="@+id/catBreedsFragment"
+        android:name="com.example.catapp.scenes.cat_breeds.CatBreedsFragment">
+        <action
+            android:id="@+id/breedsToDetails"
+            app:destination="@id/breedDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/breedDetailsFragment"
+        android:name="com.example.catapp.breed_details.BreedDetailsFragment">
+        <action
+            android:id="@+id/detailsToWiki"
+            app:destination="@+id/wikiFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/wikiFragment"
+        android:name="com.example.catapp.scenes.breed_details.WikiWebViewFragment">
+        <argument
+            android:name="url"
+            app:argType="string"
+            app:nullable="false" />
+    </fragment>
+
+</navigation>
