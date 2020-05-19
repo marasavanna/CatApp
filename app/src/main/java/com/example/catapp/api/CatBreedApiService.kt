@@ -12,6 +12,9 @@ interface CatBreedApiService {
     fun getCatBreedsAsync(@Query("page") pageIndex: Int,
                           @Query("limit") limit: Int): Deferred<MutableList<BreedDataItem>>
 
+    @GET("breeds/search")
+    fun findByBreedName(@Query("q") breedName: String): Deferred<MutableList<BreedDataItem>>
+
     @GET("images/search")
     fun getCatBreedImageAsync(
         @Query("breed_id") breedId: String

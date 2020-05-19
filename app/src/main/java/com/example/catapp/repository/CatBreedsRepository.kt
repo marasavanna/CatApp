@@ -16,7 +16,6 @@ class CatBreedsRepository(private val catBreedApiService: CatBreedApiService) {
 
     fun getCatBreeds(
         catBreeds: MutableLiveData<MutableList<CatBreedItemWrapper>>,
-        catBreedsDetails: MutableLiveData<MutableList<BreedDetailsWrapper>>,
         catBreedsFetchError: MutableLiveData<Exception>,
         page: Int
     ) {
@@ -26,14 +25,8 @@ class CatBreedsRepository(private val catBreedApiService: CatBreedApiService) {
             withContext(Dispatchers.Main) {
                 try {
                     val catBreedsResults = mutableListOf<CatBreedItemWrapper>()
-                    val catBreedsDetailsResults = mutableListOf<BreedDetailsWrapper>()
                     val response = request.await()
                     response.map { breedItem ->
-                        val wikiLink = if (breedItem.wikipedia_url.isNullOrEmpty()) {
-                            "https://google.com"
-                        } else {
-                            breedItem.wikipedia_url
-                        }
                         catBreedsResults.add(
                             CatBreedItemWrapper(
                                 image,
@@ -41,23 +34,46 @@ class CatBreedsRepository(private val catBreedApiService: CatBreedApiService) {
                                 breedItem.description
                             )
                         )
-                        catBreedsDetailsResults.add(
-                            BreedDetailsWrapper(
-                                image,
-                                breedItem.name,
-                                breedItem.description,
-                                breedItem.country_code,
-                                breedItem.temperament,
-                                wikiLink
-                            )
-                        )
 
                     }
                     catBreedsResults.sortBy { catBreedItemWrapper -> catBreedItemWrapper.name }
                     catBreeds.value = catBreedsResults
-                    catBreedsDetails.value = catBreedsDetailsResults
                 } catch (e: Exception) {
                     catBreedsFetchError.value = e
+                }
+            }
+        }
+    }
+
+    fun findCatBreedByName(
+        breedName: String,
+        breedDescription: String,
+        breedDetail: MutableLiveData<BreedDetailsWrapper>,
+        catBreedFetchError: MutableLiveData<Exception>
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val request = catBreedApiService.findByBreedName(breedName)
+            val image = "https://cdn2.thecatapi.com/images/tv8tNeYaU.jpg"
+            withContext(Dispatchers.Main) {
+                try {
+                    val response = request.await()
+                    val singledResponse =
+                        response.findLast { breedDataItem -> breedDataItem.description == breedDescription }
+                    singledResponse?.let {
+                        breedDetail.value = singledResponse.wikipedia_url?.let { wikiLink ->
+                            BreedDetailsWrapper(
+                                image,
+                                singledResponse.name,
+                                singledResponse.description,
+                                singledResponse.country_code,
+                                singledResponse.temperament,
+                                wikiLink
+                            )
+                        }
+                    }
+
+                } catch (e: Exception) {
+                    catBreedFetchError.value = e
                 }
             }
         }

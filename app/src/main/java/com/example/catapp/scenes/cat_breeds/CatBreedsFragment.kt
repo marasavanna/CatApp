@@ -26,8 +26,20 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        val scrollListener = object : PaginationScrollListener(
+            binding.catBreeds.layoutManager as LinearLayoutManager
+        ) {
+            override fun loadMoreItems() {
+                shouldLoadMore = false
+                viewModel.isLoading.set(true)
+                viewModel.getCatBreeds(++page)
+            }
+        }
+        binding.catBreeds.addOnScrollListener(scrollListener)
+
         viewModel.catBreeds.observeNonNull(viewLifecycleOwner) {
-            //            scrollListener.shouldLoadMore = true
+            scrollListener.shouldLoadMore = true
+            viewModel.isLoading.set(false)
             adapter.notifyChanges(it)
         }
     }
@@ -35,25 +47,29 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+//        binding.searchByCountry.setOnQueryTextListener(object: androidx.appcompat.widget.SearchView.OnQueryTextListener{
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//               query?.let {
+//
+//               }
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//
+//            }
+//
+//        })
+
         viewModel.getCatBreeds(page)
 
         binding.catBreeds.layoutManager = LinearLayoutManager(requireContext())
         binding.catBreeds.adapter = adapter
 
-        val scrollListener = object : PaginationScrollListener(
-            binding.catBreeds.layoutManager as LinearLayoutManager
-        ) {
-            override fun loadMoreItems() {
-                shouldLoadMore = false
-                page++
-                viewModel.getCatBreeds(page)
-            }
-        }
-        binding.catBreeds.addOnScrollListener(scrollListener)
+        binding.viewModel = viewModel
 
         adapter.setOnCatItemClickListener {
             val directions =
-                CatBreedsFragmentDirections.breedsToDetails(viewModel.findDetailsWrapper(it.name))
+                CatBreedsFragmentDirections.breedsToDetails(it.name, it.description)
             findNavController().navigateIfAdded(
                 this@CatBreedsFragment,
                 directions,

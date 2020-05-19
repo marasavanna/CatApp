@@ -20,9 +20,12 @@
             app:destination="@+id/wikiFragment" />
 
         <argument
-            android:name="breedDetail"
-            app:argType="com.example.catapp.scenes.breed_details.BreedDetailsWrapper"
-            app:nullable="true" />
+            android:name="breedName"
+            app:argType="string" />
+
+        <argument
+            android:name="breedDescription"
+            app:argType="string" />
     </fragment>
 
     <fragment

@@ -1,6 +1,7 @@
 package com.example.catapp.di
 
 import com.example.catapp.api.CatBreedApiService
+import com.example.catapp.breed_details.BreedDetailsViewModel
 import com.example.catapp.repository.CatBreedsRepository
 import com.example.catapp.scenes.cat_breeds.CatBreedsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -13,6 +14,7 @@ val viewModelModule = module {
     }
 
     viewModel { CatBreedsViewModel(get()) }
+    viewModel { BreedDetailsViewModel(get()) }
 }
 
 fun provideCatBreedsRepository(

@@ -14,10 +14,6 @@ class CatBreedsViewModel(private val catBreedsRepository: CatBreedsRepository) :
         get() = _catBreeds
     private val _catBreeds = MutableLiveData<MutableList<CatBreedItemWrapper>>()
 
-    val catBreedsDetails: LiveData<MutableList<BreedDetailsWrapper>>
-        get() = _catBreedsDetails
-    private val _catBreedsDetails = MutableLiveData<MutableList<BreedDetailsWrapper>>()
-
     val catBreedsFetchError: LiveData<Exception>
         get() = _catBreedsFetchError
     private val _catBreedsFetchError = MutableLiveData<Exception>()
@@ -30,17 +26,11 @@ class CatBreedsViewModel(private val catBreedsRepository: CatBreedsRepository) :
         get() = _catBreedImageFetchError
     private val _catBreedImageFetchError = MutableLiveData<Exception>()
 
-
-    val isLoading = MutableLiveData<Boolean>()
-
-    fun findDetailsWrapper(name: String): BreedDetailsWrapper? {
-        return _catBreedsDetails.value?.firstOrNull { breedDetailsWrapper -> breedDetailsWrapper.name == name }
-    }
+    val isLoading = ObservableBoolean(true)
 
     fun getCatBreeds(page: Int) {
         catBreedsRepository.getCatBreeds(
             _catBreeds,
-            _catBreedsDetails,
             _catBreedsFetchError,
             page
         )

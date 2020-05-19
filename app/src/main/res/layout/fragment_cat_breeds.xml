@@ -30,6 +30,7 @@
                 android:layout_height="match_parent"
                 android:focusable="false"
                 app:iconifiedByDefault="false"
+                isVisible="@{!viewModel.isLoading()}"
                 app:queryBackground="@android:color/transparent"
                 app:queryHint="Filter by country of origin" />
         </Toolbar>
@@ -41,6 +42,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
+            isVisible="@{!viewModel.isLoading()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:layout_constraintVertical_bias="0.0" />
@@ -49,6 +51,7 @@
             android:id="@+id/loading_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            isVisible="@{viewModel.isLoading()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/cat_breeds"
             app:layout_constraintStart_toStartOf="@+id/cat_breeds"
