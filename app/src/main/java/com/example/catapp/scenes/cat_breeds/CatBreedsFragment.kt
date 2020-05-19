@@ -44,9 +44,11 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
         binding.catBreeds.addOnScrollListener(scrollListener)
 
         adapter.setOnCatItemClickListener {
+            val directions =
+                CatBreedsFragmentDirections.breedsToDetails(viewModel.findDetailsWrapper(it.name))
             findNavController().navigateIfAdded(
                 this@CatBreedsFragment,
-                CatBreedsFragmentDirections.breedsToDetails(),
+                directions,
                 R.id.catBreedsFragment
             )
         }
@@ -55,6 +57,5 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
             scrollListener.shouldLoadMore = true
             adapter.notifyChanges(it)
         }
-
     }
 }

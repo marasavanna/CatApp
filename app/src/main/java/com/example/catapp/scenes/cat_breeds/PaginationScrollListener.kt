@@ -22,6 +22,4 @@ abstract class PaginationScrollListener(
             loadMoreItems()
         }
     }
-
-
 }
