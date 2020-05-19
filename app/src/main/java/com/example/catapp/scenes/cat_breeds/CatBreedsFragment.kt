@@ -20,49 +20,53 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
     override val layoutRes: Int
         get() = R.layout.fragment_cat_breeds
 
+    private val adapter = CatBreedsAdapter()
+    private var page = 1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
-        viewModel.getCatBreeds()
+        viewModel.getCatBreeds(page)
 
         viewModel.getCatImage("abys")
 
-        viewModel.catBreedImages.observeNonNull(this) {
-            val catBreed = CatBreedItemWrapper(
-                it[0].url,
-                "Abyssinian",
-                "The Abyssinian is easy to care for, and a joy to have in your home. They’re affectionate cats and love both people and other animals."
-            )
 
-            val adapter = CatBreedsAdapter()
-            val catBreeds = mutableListOf<CatBreedItemWrapper>()
-            catBreeds.add(catBreed)
-            catBreeds.add(catBreed)
-            catBreeds.add(catBreed)
-            catBreeds.add(catBreed)
-            catBreeds.add(catBreed)
-            catBreeds.add(catBreed)
-
-            adapter.apply {
-                this.catBreeds = catBreeds
-                setOnCatItemClickListener {
-                    findNavController().navigateIfAdded(
-                        this@CatBreedsFragment,
-                        CatBreedsFragmentDirections.breedsToDetails(),
-                        R.id.catBreedsFragment
-                    )
-                }
+        binding.catBreeds.layoutManager = LinearLayoutManager(requireContext())
+        binding.catBreeds.adapter = adapter
+        binding.catBreeds.addOnScrollListener(object :
+            PaginationScrollListener(
+                binding.catBreeds.layoutManager as LinearLayoutManager
+            ) {
+            override fun loadMoreItems() {
+                shouldLoadMore = false
+                page++
+                viewModel.getCatBreeds(page)
+//                shouldLoadMore = true
             }
-            binding.catBreeds.adapter = adapter
+
+        })
+
+        adapter.setOnCatItemClickListener {
+            findNavController().navigateIfAdded(
+                this@CatBreedsFragment,
+                CatBreedsFragmentDirections.breedsToDetails(),
+                R.id.catBreedsFragment
+            )
         }
 
         viewModel.catBreeds.observeNonNull(viewLifecycleOwner) {
-            println("para $it")
+            val catBreeds = mutableListOf<CatBreedItemWrapper>()
+            it.map { breedDataItem ->
+                catBreeds.add(
+                    CatBreedItemWrapper(
+                        "https://cdn2.thecatapi.com/images/KWdLHmOqc.jpg",
+                        breedDataItem.name, breedDataItem.description
+                    )
+                )
+            }
+            adapter.notifyChanges(catBreeds)
         }
-
-        binding.catBreeds.layoutManager = LinearLayoutManager(requireContext())
 
     }
 }

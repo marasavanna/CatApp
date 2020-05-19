@@ -1,5 +1,6 @@
 package com.example.catapp.scenes.cat_breeds
 
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.catapp.bases.BaseViewModel
@@ -25,9 +26,11 @@ class CatBreedsViewModel(private val catBreedsRepository: CatBreedsRepository) :
         get() = _catBreedImageFetchError
     private val _catBreedImageFetchError = MutableLiveData<Exception>()
 
+    val isLoading = MutableLiveData<Boolean>()
 
-    fun getCatBreeds() {
-        catBreedsRepository.getCatBreeds(_catBreeds, _catBreedsFetchError)
+
+    fun getCatBreeds(page: Int) {
+        catBreedsRepository.getCatBreeds(_catBreeds, _catBreedsFetchError, isLoading, page)
     }
 
     fun getCatImage(breedId: String) {

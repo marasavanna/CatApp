@@ -4,4 +4,6 @@
     <string name="breed_details_country_code">Country code: %1$s</string>
     <string name="breed_details_temperament">Temperament: %1$s</string>
     <string name="breed_details_wiki_link">See more on Wikipedia</string>
+
+    <string name="cat_breeds_no_results">No results found. Please try again!</string>
 </resources>
