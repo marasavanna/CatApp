@@ -2,6 +2,7 @@ package com.example.catapp.scenes.cat_breeds
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.catapp.R
@@ -41,31 +42,33 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
             scrollListener.shouldLoadMore = true
             viewModel.isLoading.set(false)
             adapter.notifyChanges(it)
+
+            binding.searchByCountry.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    val filteredList = viewModel.filterBreedsByCountry(query!!, it) as MutableList<CatBreedItemWrapper>
+                    adapter.replaceItems(filteredList)
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+//                    adapter.replaceItems(viewModel.filterBreedsByCountry(query!!, it) as MutableList<CatBreedItemWrapper>)
+                    return false
+                }
+
+            })
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        binding.searchByCountry.setOnQueryTextListener(object: androidx.appcompat.widget.SearchView.OnQueryTextListener{
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//               query?.let {
-//
-//               }
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//
-//            }
-//
-//        })
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
         viewModel.getCatBreeds(page)
 
         binding.catBreeds.layoutManager = LinearLayoutManager(requireContext())
         binding.catBreeds.adapter = adapter
-
-        binding.viewModel = viewModel
 
         adapter.setOnCatItemClickListener {
             val directions =

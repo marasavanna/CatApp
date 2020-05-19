@@ -36,6 +36,10 @@ class CatBreedsViewModel(private val catBreedsRepository: CatBreedsRepository) :
         )
     }
 
+    fun filterBreedsByCountry(origin: String, initialBreeds: List<CatBreedItemWrapper>): List<CatBreedItemWrapper> {
+        return initialBreeds.filter { catBreedItemWrapper -> catBreedItemWrapper.origin == origin }
+    }
+
     fun getCatImage(breedId: String) {
         catBreedsRepository.getCardBreedImage(breedId, _catBreedImages, _catBreedImageFetchError)
     }

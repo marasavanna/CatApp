@@ -53,6 +53,7 @@ class BreedDetailsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = this
+        binding.viewModel = viewModel
         viewModel.findDetailsByName(args.breedName, args.breedDescription)
     }
 }

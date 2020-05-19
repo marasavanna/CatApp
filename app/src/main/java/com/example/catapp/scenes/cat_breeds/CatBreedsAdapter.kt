@@ -43,4 +43,13 @@ class CatBreedsAdapter : RecyclerView.Adapter<CatBreedViewHolder>() {
         catBreeds.addAll(newList)
         notifyDataSetChanged()
     }
+
+    fun replaceItems(newList: MutableList<CatBreedItemWrapper>) {
+//        val diffCallback = CatBreedsDiffUtil(catBreeds, newList)
+//        val diffResult = DiffUtil.calculateDiff(diffCallback)
+//        diffResult.dispatchUpdatesTo(this)
+        catBreeds.clear()
+        catBreeds.addAll(newList)
+        notifyDataSetChanged()
+    }
 }

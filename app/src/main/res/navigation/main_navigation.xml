@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/catBreedsFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/catBreedsFragment"
@@ -37,4 +37,11 @@
             app:nullable="false" />
     </fragment>
 
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.catapp.scenes.auth.LoginFragment">
+        <action
+            android:id="@+id/loginToBreedsFragment"
+            app:destination="@+id/catBreedsFragment" />
+    </fragment>
 </navigation>

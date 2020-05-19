@@ -31,10 +31,10 @@ class CatBreedsRepository(private val catBreedApiService: CatBreedApiService) {
                             CatBreedItemWrapper(
                                 image,
                                 breedItem.name,
-                                breedItem.description
+                                breedItem.description,
+                                breedItem.origin
                             )
                         )
-
                     }
                     catBreedsResults.sortBy { catBreedItemWrapper -> catBreedItemWrapper.name }
                     catBreeds.value = catBreedsResults
@@ -52,7 +52,7 @@ class CatBreedsRepository(private val catBreedApiService: CatBreedApiService) {
         catBreedFetchError: MutableLiveData<Exception>
     ) {
         CoroutineScope(Dispatchers.IO).launch {
-            val request = catBreedApiService.findByBreedName(breedName)
+            val request = catBreedApiService.findByBreedNameAsync(breedName)
             val image = "https://cdn2.thecatapi.com/images/tv8tNeYaU.jpg"
             withContext(Dispatchers.Main) {
                 try {
