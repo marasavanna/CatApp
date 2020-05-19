@@ -3,6 +3,6 @@ package com.example.catapp.utils
 class Constants {
 
     companion object {
-        val paginationLimit = 10
+        const val paginationLimit = 5
     }
 }

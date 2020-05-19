@@ -1,5 +1,6 @@
 package com.example.catapp.utils
 
+import androidx.navigation.findNavController
 import com.example.catapp.R
 
 
@@ -13,11 +14,11 @@ class ToolbarManager constructor(
                     if (title != 0) {
                         it.setTitle(title)
                     }
-                    activity?.let { activity ->
+                    activity?.let { _ ->
                         it.apply {
                             setNavigationIcon(R.drawable.ic_close_black_24dp)
                             setNavigationOnClickListener {
-                                activity.onBackPressed()
+                                findNavController().navigateUp()
                             }
                         }
                     }

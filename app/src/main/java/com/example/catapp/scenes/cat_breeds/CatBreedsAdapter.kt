@@ -6,7 +6,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.catapp.R
-import kotlin.properties.Delegates
 
 typealias OnCatItemClickListener = (CatBreedItemWrapper) -> Unit
 
@@ -37,10 +36,11 @@ class CatBreedsAdapter : RecyclerView.Adapter<CatBreedViewHolder>() {
         this.onCatItemClickListener = onCatItemClickListener
     }
 
-    fun notifyChanges(newList: MutableList<CatBreedItemWrapper>){
-        val diffCallback = CatBreedsDiffUtil(catBreeds, newList)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-        diffResult.dispatchUpdatesTo(this)
+    fun notifyChanges(newList: MutableList<CatBreedItemWrapper>) {
+//        val diffCallback = CatBreedsDiffUtil(catBreeds, newList)
+//        val diffResult = DiffUtil.calculateDiff(diffCallback)
+//        diffResult.dispatchUpdatesTo(this)
         catBreeds.addAll(newList)
+        notifyDataSetChanged()
     }
 }

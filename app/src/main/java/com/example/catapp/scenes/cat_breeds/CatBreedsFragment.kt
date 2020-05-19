@@ -23,15 +23,23 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
     private val adapter = CatBreedsAdapter()
     private var page = 0
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        viewModel.catBreeds.observeNonNull(viewLifecycleOwner) {
+            //            scrollListener.shouldLoadMore = true
+            adapter.notifyChanges(it)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         viewModel.getCatBreeds(page)
-        viewModel.getCatImage("abys")
 
         binding.catBreeds.layoutManager = LinearLayoutManager(requireContext())
         binding.catBreeds.adapter = adapter
+
         val scrollListener = object : PaginationScrollListener(
             binding.catBreeds.layoutManager as LinearLayoutManager
         ) {
@@ -51,11 +59,6 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
                 directions,
                 R.id.catBreedsFragment
             )
-        }
-
-        viewModel.catBreeds.observeNonNull(viewLifecycleOwner) {
-            scrollListener.shouldLoadMore = true
-            adapter.notifyChanges(it)
         }
     }
 }
