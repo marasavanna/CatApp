@@ -8,6 +8,7 @@ import com.example.catapp.bases.BaseViewModelFragment
 import com.example.catapp.databinding.FragmentLoginBinding
 import com.example.catapp.model.User
 import com.example.catapp.utils.ToolbarFragment
+import com.example.catapp.utils.displayModalPopup
 import com.example.catapp.utils.navigateIfAdded
 import com.example.catapp.utils.observeNonNull
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -28,6 +29,12 @@ class LoginFragment : BaseViewModelFragment<FragmentLoginBinding, LoginViewModel
                 this,
                 LoginFragmentDirections.loginToBreedsFragment(),
                 R.id.loginFragment
+            )
+        }
+        viewModel.loginError.observeNonNull(viewLifecycleOwner) {
+            requireContext().displayModalPopup(
+                getString(R.string.something_bad_happened),
+                it.message
             )
         }
     }

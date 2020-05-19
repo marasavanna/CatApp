@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">CatApp</string>
 
+    <!-- General -->
+    <string name="ok">OK</string>
+    <string name="something_bad_happened">Something Bad Happened</string>
+
     <!-- Breed Details -->
     <string name="breed_details_country_code">Country code: %1$s</string>
     <string name="breed_details_temperament">Temperament: %1$s</string>

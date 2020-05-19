@@ -9,6 +9,7 @@ import com.example.catapp.R
 import com.example.catapp.bases.BaseViewModelFragment
 import com.example.catapp.databinding.FragmentCatBreedsBinding
 import com.example.catapp.utils.ToolbarFragment
+import com.example.catapp.utils.displayModalPopup
 import com.example.catapp.utils.navigateIfAdded
 import com.example.catapp.utils.observeNonNull
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -45,8 +46,8 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
 
             binding.searchByCountry.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    val filteredList = viewModel.filterBreedsByCountry(query!!, it) as MutableList<CatBreedItemWrapper>
-                    adapter.replaceItems(filteredList)
+//                    val filteredList = viewModel.filterBreedsByCountry(query!!, it) as MutableList<CatBreedItemWrapper>
+//                    adapter.replaceItems(filteredList)
                     return false
                 }
 
@@ -77,6 +78,13 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
                 this@CatBreedsFragment,
                 directions,
                 R.id.catBreedsFragment
+            )
+        }
+
+        viewModel.catBreedsFetchError.observeNonNull(viewLifecycleOwner) {
+            requireContext().displayModalPopup(
+                getString(R.string.something_bad_happened),
+                it.message
             )
         }
     }

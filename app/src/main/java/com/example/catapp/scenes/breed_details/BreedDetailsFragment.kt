@@ -8,6 +8,7 @@ import com.example.catapp.R
 import com.example.catapp.bases.BaseViewModelFragment
 import com.example.catapp.databinding.FragmentBreedDetailsBinding
 import com.example.catapp.utils.ToolbarFragment
+import com.example.catapp.utils.displayModalPopup
 import com.example.catapp.utils.navigateIfAdded
 import com.example.catapp.utils.observeNonNull
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -55,5 +56,12 @@ class BreedDetailsFragment :
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         viewModel.findDetailsByName(args.breedName, args.breedDescription)
+
+        viewModel.catBreedFetchError.observeNonNull(viewLifecycleOwner) {
+            requireContext().displayModalPopup(
+                getString(R.string.something_bad_happened),
+                it.message
+            )
+        }
     }
 }
