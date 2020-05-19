@@ -1,6 +1,5 @@
 package com.example.catapp.scenes.cat_breeds
 
-import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.catapp.bases.BaseViewModel
@@ -10,9 +9,9 @@ import com.example.catapp.repository.CatBreedsRepository
 
 class CatBreedsViewModel(private val catBreedsRepository: CatBreedsRepository) : BaseViewModel() {
 
-    val catBreeds: LiveData<MutableList<BreedDataItem>>
+    val catBreeds: LiveData<MutableList<CatBreedItemWrapper>>
         get() = _catBreeds
-    private val _catBreeds = MutableLiveData<MutableList<BreedDataItem>>()
+    private val _catBreeds = MutableLiveData<MutableList<CatBreedItemWrapper>>()
 
     val catBreedsFetchError: LiveData<Exception>
         get() = _catBreedsFetchError

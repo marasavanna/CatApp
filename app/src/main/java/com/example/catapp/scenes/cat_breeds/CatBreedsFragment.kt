@@ -21,31 +21,27 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
         get() = R.layout.fragment_cat_breeds
 
     private val adapter = CatBreedsAdapter()
-    private var page = 1
+    private var page = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
         viewModel.getCatBreeds(page)
-
         viewModel.getCatImage("abys")
-
 
         binding.catBreeds.layoutManager = LinearLayoutManager(requireContext())
         binding.catBreeds.adapter = adapter
-        binding.catBreeds.addOnScrollListener(object :
-            PaginationScrollListener(
-                binding.catBreeds.layoutManager as LinearLayoutManager
-            ) {
+        val scrollListener = object : PaginationScrollListener(
+            binding.catBreeds.layoutManager as LinearLayoutManager
+        ) {
             override fun loadMoreItems() {
                 shouldLoadMore = false
                 page++
                 viewModel.getCatBreeds(page)
-//                shouldLoadMore = true
             }
-
-        })
+        }
+        binding.catBreeds.addOnScrollListener(scrollListener)
 
         adapter.setOnCatItemClickListener {
             findNavController().navigateIfAdded(
@@ -56,16 +52,8 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
         }
 
         viewModel.catBreeds.observeNonNull(viewLifecycleOwner) {
-            val catBreeds = mutableListOf<CatBreedItemWrapper>()
-            it.map { breedDataItem ->
-                catBreeds.add(
-                    CatBreedItemWrapper(
-                        "https://cdn2.thecatapi.com/images/KWdLHmOqc.jpg",
-                        breedDataItem.name, breedDataItem.description
-                    )
-                )
-            }
-            adapter.notifyChanges(catBreeds)
+            scrollListener.shouldLoadMore = true
+            adapter.notifyChanges(it)
         }
 
     }

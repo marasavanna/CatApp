@@ -2,8 +2,8 @@ package com.example.catapp.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.example.catapp.api.CatBreedApiService
-import com.example.catapp.model.BreedDataItem
 import com.example.catapp.model.BreedImageDataItem
+import com.example.catapp.scenes.cat_breeds.CatBreedItemWrapper
 import com.example.catapp.utils.Constants.Companion.paginationLimit
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 class CatBreedsRepository(private val catBreedApiService: CatBreedApiService) {
 
     fun getCatBreeds(
-        catBreeds: MutableLiveData<MutableList<BreedDataItem>>,
+        catBreeds: MutableLiveData<MutableList<CatBreedItemWrapper>>,
         catBreedsFetchError: MutableLiveData<Exception>,
         isLoading: MutableLiveData<Boolean>,
         page: Int
@@ -24,11 +24,22 @@ class CatBreedsRepository(private val catBreedApiService: CatBreedApiService) {
             isLoading.postValue(true)
             withContext(Dispatchers.Main) {
                 try {
+                    val catBreedsResults = mutableListOf<CatBreedItemWrapper>()
                     val response = request.await()
-                    catBreeds.value = response
+                    response.map { breedItem ->
+                        catBreedsResults.add(
+                            CatBreedItemWrapper(
+                                "https://cdn2.thecatapi.com/images/tv8tNeYaU.jpg",
+                                breedItem.name,
+                                breedItem.description
+                            )
+                        )
+
+                    }
+                    catBreeds.value = catBreedsResults
                 } catch (e: Exception) {
                     catBreedsFetchError.value = e
-                    isLoading.postValue( false)
+                    isLoading.postValue(false)
                 }
             }
         }
