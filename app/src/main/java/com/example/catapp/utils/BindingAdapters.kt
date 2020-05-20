@@ -8,7 +8,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 @BindingAdapter("imageUrl")
 fun ImageView.setImageUrl(url: String?) {
-    Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).into(this)
+    Glide.with(context)
+        .load(url)
+        .diskCacheStrategy(DiskCacheStrategy.DATA)
+        .into(this)
 }
 
 @BindingAdapter("isVisible")

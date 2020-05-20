@@ -2,7 +2,6 @@ package com.example.catapp.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.example.catapp.api.CatBreedApiService
-import com.example.catapp.model.BreedImageDataItem
 import com.example.catapp.scenes.breed_details.BreedDetailsWrapper
 import com.example.catapp.scenes.cat_breeds.CatBreedItemWrapper
 import com.example.catapp.utils.Constants.Companion.paginationLimit
@@ -17,19 +16,26 @@ class CatBreedsRepository(private val catBreedApiService: CatBreedApiService) {
     fun getCatBreeds(
         catBreeds: MutableLiveData<MutableList<CatBreedItemWrapper>>,
         catBreedsFetchError: MutableLiveData<Exception>,
-        page: Int
+        page: Int?
     ) {
         CoroutineScope(Dispatchers.IO).launch {
-            val request = catBreedApiService.getCatBreedsAsync(page, paginationLimit)
-            val image = "https://cdn2.thecatapi.com/images/tv8tNeYaU.jpg"
+            val request = if (page != null) {
+                catBreedApiService.getCatBreedsAsync(page, paginationLimit)
+            } else {
+                catBreedApiService.getCatBreedsAsync(null, null)
+            }
+
             withContext(Dispatchers.Main) {
                 try {
                     val catBreedsResults = mutableListOf<CatBreedItemWrapper>()
                     val response = request.await()
                     response.map { breedItem ->
+                        val imageRequest = withContext(Dispatchers.IO) {
+                            catBreedApiService.getCatBreedImageAsync(breedItem.id)
+                        }
                         catBreedsResults.add(
                             CatBreedItemWrapper(
-                                image,
+                                imageRequest.await().first().url,
                                 breedItem.name,
                                 breedItem.description,
                                 breedItem.origin
@@ -53,16 +59,18 @@ class CatBreedsRepository(private val catBreedApiService: CatBreedApiService) {
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             val request = catBreedApiService.findByBreedNameAsync(breedName)
-            val image = "https://cdn2.thecatapi.com/images/tv8tNeYaU.jpg"
             withContext(Dispatchers.Main) {
                 try {
                     val response = request.await()
                     val singledResponse =
                         response.findLast { breedDataItem -> breedDataItem.description == breedDescription }
                     singledResponse?.let {
+                        val imageRequest = withContext(Dispatchers.IO) {
+                            catBreedApiService.getCatBreedImageAsync(it.id)
+                        }
                         breedDetail.value = singledResponse.wikipedia_url?.let { wikiLink ->
                             BreedDetailsWrapper(
-                                image,
+                                imageRequest.await().first().url,
                                 singledResponse.name,
                                 singledResponse.description,
                                 singledResponse.country_code,
@@ -74,24 +82,6 @@ class CatBreedsRepository(private val catBreedApiService: CatBreedApiService) {
 
                 } catch (e: Exception) {
                     catBreedFetchError.value = e
-                }
-            }
-        }
-    }
-
-    fun getCardBreedImage(
-        breedId: String,
-        breedImage: MutableLiveData<MutableList<BreedImageDataItem>>,
-        imageFetchError: MutableLiveData<Exception>
-    ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val request = catBreedApiService.getCatBreedImageAsync(breedId)
-            withContext(Dispatchers.Main) {
-                try {
-                    val response = request.await()
-                    breedImage.value = response
-                } catch (e: Exception) {
-                    imageFetchError.value = e
                 }
             }
         }

@@ -10,8 +10,8 @@ import retrofit2.http.Query
 interface CatBreedApiService {
 
     @GET("breeds")
-    fun getCatBreedsAsync(@Query("page") pageIndex: Int,
-                          @Query("limit") limit: Int): Deferred<MutableList<BreedDataItem>>
+    fun getCatBreedsAsync(@Query("page") pageIndex: Int?,
+                          @Query("limit") limit: Int?): Deferred<MutableList<BreedDataItem>>
 
     @GET("breeds/search")
     fun findByBreedNameAsync(@Query("q") breedName: String): Deferred<MutableList<BreedDataItem>>

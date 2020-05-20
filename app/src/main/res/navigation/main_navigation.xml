@@ -5,6 +5,14 @@
     app:startDestination="@id/loginFragment">
 
     <fragment
+        android:id="@+id/pagedCatBreedsFragment"
+        android:name="com.example.catapp.scenes.cat_breeds.PagedCatBreedsFragment">
+        <action
+            android:id="@+id/breedsToDetails"
+            app:destination="@id/breedDetailsFragment" />
+    </fragment>
+
+    <fragment
         android:id="@+id/catBreedsFragment"
         android:name="com.example.catapp.scenes.cat_breeds.CatBreedsFragment">
         <action

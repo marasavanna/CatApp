@@ -12,61 +12,23 @@ import com.example.catapp.utils.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBreedsViewModel>() {
-
     override val viewModel: CatBreedsViewModel by viewModel()
-    override fun builder(): ToolbarFragment? = null
-
     override val layoutRes: Int
         get() = R.layout.fragment_cat_breeds
 
+    override fun builder(): ToolbarFragment? = null
+
     private val adapter = CatBreedsAdapter()
-    private var page = 0
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        val scrollListener = object : PaginationScrollListener(
-            binding.catBreeds.layoutManager as LinearLayoutManager
-        ) {
-            override fun loadMoreItems() {
-                shouldLoadMore = false
-                startLoading()
-                viewModel.getCatBreeds(++page)
-            }
-        }
-        binding.catBreeds.addOnScrollListener(scrollListener)
-
-        viewModel.catBreeds.observeNonNull(viewLifecycleOwner) {
-            scrollListener.shouldLoadMore = true
-            stopLoading()
-            adapter.notifyChanges(it)
-
-            binding.searchByCountry.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-//                    val filteredList = viewModel.filterBreedsByCountry(query!!, it) as MutableList<CatBreedItemWrapper>
-//                    adapter.replaceItems(filteredList)
-                    return false
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-//                    adapter.replaceItems(viewModel.filterBreedsByCountry(query!!, it) as MutableList<CatBreedItemWrapper>)
-                    return false
-                }
-
-            })
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
         startLoading()
 
         if (NetworkUtils.isNetworkAvailable(requireContext())) {
-            viewModel.getCatBreeds(page)
+            viewModel.getCatBreeds(null)
         }
 
         binding.catBreeds.layoutManager = LinearLayoutManager(requireContext())
@@ -88,6 +50,39 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
                 getString(R.string.something_bad_happened),
                 it.message
             )
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        viewModel.filteredCats.observeNonNull(viewLifecycleOwner) {
+            adapter.replaceItems(it as MutableList<CatBreedItemWrapper>)
+        }
+
+        viewModel.catBreeds.observeNonNull(this) {
+            stopLoading()
+            adapter.notifyChanges(it)
+
+            binding.searchByCountry.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if (newText.isNullOrEmpty()) {
+                        viewModel.catBreeds.value?.let { catBreeds ->
+                            adapter.replaceItems(catBreeds.toMutableList())
+                        }
+                    } else {
+                        viewModel.filterBreedsByCountry(
+                            newText,
+                            it
+                        )
+                    }
+                    return false
+                }
+            })
         }
     }
 }
