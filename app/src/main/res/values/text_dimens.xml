@@ -3,6 +3,7 @@
 
     <!-- General -->
 
+    <dimen name="header">24sp</dimen>
     <dimen name="title">20sp</dimen>
     <dimen name="subtitle">18sp</dimen>
     <dimen name="large_body">16sp</dimen>

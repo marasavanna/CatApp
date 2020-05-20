@@ -6,6 +6,8 @@ class Constants {
 
     companion object {
         const val paginationLimit = 10
+        const val passwordMinimLength = 6
+        const val characterEmail = "@"
 
         val users = mutableListOf(
             User("mara@email.com", "qwerty"),

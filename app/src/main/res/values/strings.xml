@@ -4,6 +4,7 @@
     <!-- General -->
     <string name="ok">OK</string>
     <string name="something_bad_happened">Something Bad Happened</string>
+    <string name="no_internet_connection_dialog_message">You are offline. Please check connectivity.</string>
 
     <!-- Breed Details -->
     <string name="breed_details_country_code">Country code: %1$s</string>
@@ -19,4 +20,5 @@
     <string name="login_hint_password">Password</string>
     <string name="login">Log in</string>
     <string name="login_welcome_message">Become a Catstomer!</string>
+    <string name="login_invalid_format">Invalid format</string>
 </resources>

@@ -7,10 +7,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.catapp.R
 import com.example.catapp.bases.BaseViewModelFragment
 import com.example.catapp.databinding.FragmentBreedDetailsBinding
-import com.example.catapp.utils.ToolbarFragment
-import com.example.catapp.utils.displayModalPopup
-import com.example.catapp.utils.navigateIfAdded
-import com.example.catapp.utils.observeNonNull
+import com.example.catapp.utils.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BreedDetailsFragment :
@@ -55,9 +52,13 @@ class BreedDetailsFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        viewModel.findDetailsByName(args.breedName, args.breedDescription)
 
+
+        if (NetworkUtils.isNetworkAvailable(requireContext())) {
+            viewModel.findDetailsByName(args.breedName, args.breedDescription)
+        }
         viewModel.catBreedFetchError.observeNonNull(viewLifecycleOwner) {
+            viewModel.isLoading.set(false)
             requireContext().displayModalPopup(
                 getString(R.string.something_bad_happened),
                 it.message

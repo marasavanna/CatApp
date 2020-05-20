@@ -10,14 +10,15 @@ import okhttp3.ResponseBody
 class LoginRepository(private val apiService: LoginApiService) {
 
     fun login(
-        user: User,
+        email: String,
+        password: String,
         loginError: MutableLiveData<Exception>,
         loginResponse: MutableLiveData<ResponseBody>
     ) {
         runBlocking {
-            delay(2000L)
+            delay(1000L)
             try {
-                loginResponse.value = apiService.login(user)
+                loginResponse.value = apiService.login(User(email, password))
             } catch (e: Exception) {
                 loginError.value = e
             }

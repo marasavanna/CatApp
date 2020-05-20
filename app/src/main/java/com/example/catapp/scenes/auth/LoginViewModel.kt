@@ -1,5 +1,7 @@
 package com.example.catapp.scenes.auth
 
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.catapp.bases.BaseViewModel
@@ -18,7 +20,11 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
         get() = _loginResponse
     private val _loginResponse = MutableLiveData<ResponseBody>()
 
-    fun login(user: User) {
-        loginRepository.login(user, _loginError, _loginResponse)
+    val email = ObservableField<String>()
+    val password = ObservableField<String>()
+    val isLoading = ObservableBoolean(false)
+
+    fun login(email: String, password: String) {
+        loginRepository.login(email, password, _loginError, _loginResponse)
     }
 }

@@ -8,10 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.catapp.R
 import com.example.catapp.bases.BaseViewModelFragment
 import com.example.catapp.databinding.FragmentCatBreedsBinding
-import com.example.catapp.utils.ToolbarFragment
-import com.example.catapp.utils.displayModalPopup
-import com.example.catapp.utils.navigateIfAdded
-import com.example.catapp.utils.observeNonNull
+import com.example.catapp.utils.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBreedsViewModel>() {
@@ -66,7 +63,9 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        viewModel.getCatBreeds(page)
+        if (NetworkUtils.isNetworkAvailable(requireContext())) {
+            viewModel.getCatBreeds(page)
+        }
 
         binding.catBreeds.layoutManager = LinearLayoutManager(requireContext())
         binding.catBreeds.adapter = adapter
@@ -82,6 +81,7 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
         }
 
         viewModel.catBreedsFetchError.observeNonNull(viewLifecycleOwner) {
+            viewModel.isLoading.set(false)
             requireContext().displayModalPopup(
                 getString(R.string.something_bad_happened),
                 it.message

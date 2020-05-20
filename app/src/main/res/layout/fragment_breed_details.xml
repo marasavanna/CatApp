@@ -99,14 +99,13 @@
 
         <Button
             android:id="@+id/wiki_link"
-            style="@style/link"
+            style="@style/GeneralButton"
             isVisible="@{!viewModel.isLoading()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/size_normal"
             android:layout_marginEnd="@dimen/size_normal"
             android:layout_marginBottom="@dimen/size_double"
-            android:background="?android:attr/selectableItemBackground"
             android:text="@string/breed_details_wiki_link"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
