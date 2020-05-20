@@ -26,7 +26,6 @@ class CatBreedsViewModel(private val catBreedsRepository: CatBreedsRepository) :
         get() = _catBreedImageFetchError
     private val _catBreedImageFetchError = MutableLiveData<Exception>()
 
-    val isLoading = ObservableBoolean(true)
 
     fun getCatBreeds(page: Int) {
         catBreedsRepository.getCatBreeds(

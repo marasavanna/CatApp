@@ -9,7 +9,8 @@
     <dimen name="size_normal">16dp</dimen>
     <dimen name="size_large">24dp</dimen>
     <dimen name="size_double">32dp</dimen>
-
+    <dimen name="size_quadruple">64dp</dimen>
+    <dimen name="size_double_quadruple">112dp</dimen>
 
     <!-- Breed Item -->
     <dimen name="breed_image_size">124dp</dimen>

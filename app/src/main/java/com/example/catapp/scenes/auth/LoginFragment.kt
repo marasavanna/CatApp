@@ -27,14 +27,14 @@ class LoginFragment : BaseViewModelFragment<FragmentLoginBinding, LoginViewModel
                 LoginFragmentDirections.loginToBreedsFragment(),
                 R.id.loginFragment
             )
-            viewModel.isLoading.set(false)
+            stopLoading()
         }
         viewModel.loginError.observeNonNull(viewLifecycleOwner) {
             requireContext().displayModalPopup(
                 getString(R.string.something_bad_happened),
                 it.message
             )
-            viewModel.isLoading.set(false)
+            stopLoading()
         }
     }
 
@@ -44,8 +44,8 @@ class LoginFragment : BaseViewModelFragment<FragmentLoginBinding, LoginViewModel
         binding.viewModel = viewModel
 
         binding.login.setOnClickListener {
+            startLoading()
             if (NetworkUtils.isNetworkAvailable(requireContext())) {
-                viewModel.isLoading.set(true)
                 with(viewModel) {
                     email.get()?.let { emailText ->
                         password.get()?.let { passwordText ->

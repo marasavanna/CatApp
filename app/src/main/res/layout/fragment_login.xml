@@ -17,9 +17,10 @@
         <TextView
             android:id="@+id/welcome_message"
             style="@style/header"
+            isVisible="@{!viewModel.isLoading()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="112dp"
+            android:layout_marginTop="@dimen/size_double_quadruple"
             android:text="@string/login_welcome_message"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,11 +28,12 @@
 
         <EditText
             android:id="@+id/email"
+            isVisible="@{!viewModel.isLoading()}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="64dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="@dimen/size_normal"
+            android:layout_marginTop="@dimen/size_quadruple"
+            android:layout_marginEnd="@dimen/size_normal"
             android:hint="@string/login_hint_email"
             android:importantForAutofill="no"
             android:inputType="textEmailAddress"
@@ -40,17 +42,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/welcome_message" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
         <EditText
             android:id="@+id/password"
+            isVisible="@{!viewModel.isLoading()}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="@dimen/size_normal"
+            android:layout_marginTop="@dimen/size_half"
+            android:layout_marginEnd="@dimen/size_normal"
             android:hint="@string/login_hint_password"
             android:importantForAutofill="no"
             android:inputType="textPassword"
@@ -62,19 +61,26 @@
         <Button
             android:id="@+id/login"
             style="@style/GeneralButton"
+            isVisible="@{!viewModel.isLoading()}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
-            android:layout_marginEnd="64dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginStart="@dimen/size_quadruple"
+            android:layout_marginEnd="@dimen/size_quadruple"
+            android:layout_marginBottom="@dimen/size_double"
             android:text="@string/login"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
         <ProgressBar
             android:id="@+id/loading_indicator"
-
+            isVisible="@{viewModel.isLoading()}"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

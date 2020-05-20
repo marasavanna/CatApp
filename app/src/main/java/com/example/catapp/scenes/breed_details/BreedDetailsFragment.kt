@@ -29,7 +29,7 @@ class BreedDetailsFragment :
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.catBreedDetail.observeNonNull(viewLifecycleOwner) {
-            viewModel.isLoading.set(false)
+            stopLoading()
             val directions =
                 viewModel.catBreedDetail.value?.wikiLink?.let { link ->
                     BreedDetailsFragmentDirections.detailsToWiki(
@@ -53,12 +53,13 @@ class BreedDetailsFragment :
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-
         if (NetworkUtils.isNetworkAvailable(requireContext())) {
+            startLoading()
             viewModel.findDetailsByName(args.breedName, args.breedDescription)
         }
+
         viewModel.catBreedFetchError.observeNonNull(viewLifecycleOwner) {
-            viewModel.isLoading.set(false)
+            stopLoading()
             requireContext().displayModalPopup(
                 getString(R.string.something_bad_happened),
                 it.message

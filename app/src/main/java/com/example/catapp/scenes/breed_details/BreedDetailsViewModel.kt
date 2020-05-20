@@ -1,6 +1,5 @@
 package com.example.catapp.breed_details
 
-import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.catapp.bases.BaseViewModel
@@ -16,8 +15,6 @@ class BreedDetailsViewModel(private val repository: CatBreedsRepository) : BaseV
     val catBreedFetchError: LiveData<Exception>
         get() = _catBreedsFetchError
     private val _catBreedsFetchError = MutableLiveData<Exception>()
-
-    val isLoading = ObservableBoolean(true)
 
     fun findDetailsByName(name: String, description: String) {
         repository.findCatBreedByName(name, description, _catBreedDetail, _catBreedsFetchError)

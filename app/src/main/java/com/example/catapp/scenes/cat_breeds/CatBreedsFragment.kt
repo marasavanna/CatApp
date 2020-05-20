@@ -30,7 +30,7 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
         ) {
             override fun loadMoreItems() {
                 shouldLoadMore = false
-                viewModel.isLoading.set(true)
+                startLoading()
                 viewModel.getCatBreeds(++page)
             }
         }
@@ -38,7 +38,7 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
 
         viewModel.catBreeds.observeNonNull(viewLifecycleOwner) {
             scrollListener.shouldLoadMore = true
-            viewModel.isLoading.set(false)
+            stopLoading()
             adapter.notifyChanges(it)
 
             binding.searchByCountry.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -63,6 +63,8 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+        startLoading()
+
         if (NetworkUtils.isNetworkAvailable(requireContext())) {
             viewModel.getCatBreeds(page)
         }
@@ -81,7 +83,7 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
         }
 
         viewModel.catBreedsFetchError.observeNonNull(viewLifecycleOwner) {
-            viewModel.isLoading.set(false)
+            stopLoading()
             requireContext().displayModalPopup(
                 getString(R.string.something_bad_happened),
                 it.message
