@@ -5,7 +5,7 @@ import com.example.catapp.model.User
 class Constants {
 
     companion object {
-        const val paginationLimit = 10
+        const val imageLimit = 1
         const val passwordMinimLength = 6
         const val characterEmail = "@"
 

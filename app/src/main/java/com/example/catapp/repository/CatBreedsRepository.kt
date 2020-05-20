@@ -4,45 +4,47 @@ import androidx.lifecycle.MutableLiveData
 import com.example.catapp.api.CatBreedApiService
 import com.example.catapp.scenes.breed_details.BreedDetailsWrapper
 import com.example.catapp.scenes.cat_breeds.CatBreedItemWrapper
-import com.example.catapp.utils.Constants.Companion.paginationLimit
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.catapp.utils.Constants.Companion.imageLimit
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.flow
 
 
 class CatBreedsRepository(private val catBreedApiService: CatBreedApiService) {
 
+    @FlowPreview
     fun getCatBreeds(
         catBreeds: MutableLiveData<MutableList<CatBreedItemWrapper>>,
-        catBreedsFetchError: MutableLiveData<Exception>,
-        page: Int?
+        catBreedsFetchError: MutableLiveData<Exception>
     ) {
         CoroutineScope(Dispatchers.IO).launch {
-            val request = if (page != null) {
-                catBreedApiService.getCatBreedsAsync(page, paginationLimit)
-            } else {
-                catBreedApiService.getCatBreedsAsync(null, null)
-            }
-
+            val request = catBreedApiService.getCatBreedsAsync()
             withContext(Dispatchers.Main) {
                 try {
                     val catBreedsResults = mutableListOf<CatBreedItemWrapper>()
                     val response = request.await()
-                    response.map { breedItem ->
-                        val imageRequest = withContext(Dispatchers.IO) {
-                            catBreedApiService.getCatBreedImageAsync(breedItem.id)
+                    response.asFlow().flatMapMerge(concurrency = 8) { catBreedItem ->
+                        flow {
+                            emit(
+                                catBreedItem to catBreedApiService.getCatBreedImageAsync(
+                                    catBreedItem.id,
+                                    imageLimit
+                                )
+                            )
                         }
+                    }.collect { pair ->
                         catBreedsResults.add(
                             CatBreedItemWrapper(
-                                imageRequest.await().first().url,
-                                breedItem.name,
-                                breedItem.description,
-                                breedItem.origin
+                                pair.second.await().first().url,
+                                pair.first.name,
+                                pair.first.description,
+                                pair.first.origin
                             )
                         )
                     }
-                    catBreedsResults.sortBy { catBreedItemWrapper -> catBreedItemWrapper.name }
+//                    catBreedsResults.sortBy { catBreedItemWrapper -> catBreedItemWrapper.name }
                     catBreeds.value = catBreedsResults
                 } catch (e: Exception) {
                     catBreedsFetchError.value = e
@@ -66,7 +68,7 @@ class CatBreedsRepository(private val catBreedApiService: CatBreedApiService) {
                         response.findLast { breedDataItem -> breedDataItem.description == breedDescription }
                     singledResponse?.let {
                         val imageRequest = withContext(Dispatchers.IO) {
-                            catBreedApiService.getCatBreedImageAsync(it.id)
+                            catBreedApiService.getCatBreedImageAsync(it.id, imageLimit)
                         }
                         breedDetail.value = singledResponse.wikipedia_url?.let { wikiLink ->
                             BreedDetailsWrapper(
@@ -87,3 +89,9 @@ class CatBreedsRepository(private val catBreedApiService: CatBreedApiService) {
         }
     }
 }
+//
+//suspend fun <K, V> Flow<Pair<K, V>>.toMap(): Map<K, V> {
+//    val result = mutableMapOf<K, V>()
+//    collect { (k, v) -> result[k] = v }
+//    return result
+//}

@@ -21,11 +21,10 @@ class CatBreedsViewModel(private val catBreedsRepository: CatBreedsRepository) :
         get() = _catBreedsFetchError
     private val _catBreedsFetchError = MutableLiveData<Exception>()
 
-    fun getCatBreeds(page: Int?) {
+    fun getCatBreeds() {
         catBreedsRepository.getCatBreeds(
             _catBreeds,
-            _catBreedsFetchError,
-            page
+            _catBreedsFetchError
         )
     }
 

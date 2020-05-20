@@ -28,7 +28,7 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
         startLoading()
 
         if (NetworkUtils.isNetworkAvailable(requireContext())) {
-            viewModel.getCatBreeds(null)
+            viewModel.getCatBreeds()
         }
 
         binding.catBreeds.layoutManager = LinearLayoutManager(requireContext())

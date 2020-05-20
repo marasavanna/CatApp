@@ -10,7 +10,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 fun ImageView.setImageUrl(url: String?) {
     Glide.with(context)
         .load(url)
-        .diskCacheStrategy(DiskCacheStrategy.DATA)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
         .into(this)
 }
 
