@@ -44,7 +44,7 @@ class CatBreedsRepository(private val catBreedApiService: CatBreedApiService) {
                             )
                         )
                     }
-//                    catBreedsResults.sortBy { catBreedItemWrapper -> catBreedItemWrapper.name }
+                    catBreedsResults.sortBy { catBreedItemWrapper -> catBreedItemWrapper.name }
                     catBreeds.value = catBreedsResults
                 } catch (e: Exception) {
                     catBreedsFetchError.value = e
@@ -89,9 +89,3 @@ class CatBreedsRepository(private val catBreedApiService: CatBreedApiService) {
         }
     }
 }
-//
-//suspend fun <K, V> Flow<Pair<K, V>>.toMap(): Map<K, V> {
-//    val result = mutableMapOf<K, V>()
-//    collect { (k, v) -> result[k] = v }
-//    return result
-//}

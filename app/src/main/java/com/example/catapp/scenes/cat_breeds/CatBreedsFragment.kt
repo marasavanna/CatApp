@@ -43,14 +43,6 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
                 R.id.catBreedsFragment
             )
         }
-
-        viewModel.catBreedsFetchError.observeNonNull(viewLifecycleOwner) {
-            stopLoading()
-            requireContext().displayModalPopup(
-                getString(R.string.something_bad_happened),
-                it.message
-            )
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -83,6 +75,14 @@ class CatBreedsFragment : BaseViewModelFragment<FragmentCatBreedsBinding, CatBre
                     return false
                 }
             })
+        }
+
+        viewModel.catBreedsFetchError.observeNonNull(viewLifecycleOwner) {
+            stopLoading()
+            requireContext().displayModalPopup(
+                getString(R.string.something_bad_happened),
+                it.message
+            )
         }
     }
 }

@@ -28,6 +28,7 @@ class BreedDetailsFragment :
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         viewModel.catBreedDetail.observeNonNull(viewLifecycleOwner) {
             stopLoading()
             val directions =
@@ -46,6 +47,14 @@ class BreedDetailsFragment :
                 }
             }
         }
+
+        viewModel.catBreedFetchError.observeNonNull(viewLifecycleOwner) {
+            stopLoading()
+            requireContext().displayModalPopup(
+                getString(R.string.something_bad_happened),
+                it.message
+            )
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,14 +65,6 @@ class BreedDetailsFragment :
         if (NetworkUtils.isNetworkAvailable(requireContext())) {
             startLoading()
             viewModel.findDetailsByName(args.breedName, args.breedDescription)
-        }
-
-        viewModel.catBreedFetchError.observeNonNull(viewLifecycleOwner) {
-            stopLoading()
-            requireContext().displayModalPopup(
-                getString(R.string.something_bad_happened),
-                it.message
-            )
         }
     }
 }
