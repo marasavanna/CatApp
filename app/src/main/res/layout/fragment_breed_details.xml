@@ -11,115 +11,121 @@
             type="com.example.catapp.breed_details.BreedDetailsViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/image"
-            imageUrl="@{viewModel.catBreedDetail.image}"
-            isVisible="@{!viewModel.isLoading()}"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/breed_details_image_height"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            tools:ignore="ContentDescription"
-            tools:src="@tools:sample/backgrounds/scenic" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/breed_name"
-            style="@style/title"
-            isVisible="@{!viewModel.isLoading()}"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/size_normal"
-            android:layout_marginTop="@dimen/size_large"
-            android:layout_marginEnd="@dimen/size_normal"
-            android:text="@{viewModel.catBreedDetail.name}"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image"
-            tools:text="Abyssinian" />
+            <ImageView
+                android:id="@+id/image"
+                imageUrl="@{viewModel.catBreedDetail.image}"
+                isVisible="@{!viewModel.isLoading()}"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/breed_details_image_height"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
+                tools:ignore="ContentDescription"
+                tools:src="@tools:sample/backgrounds/scenic" />
 
-        <TextView
-            android:id="@+id/breed_description"
-            style="@style/body"
-            isVisible="@{!viewModel.isLoading()}"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/size_normal"
-            android:layout_marginTop="@dimen/size_normal"
-            android:layout_marginEnd="@dimen/size_normal"
-            android:text="@{viewModel.catBreedDetail.description}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/breed_name"
-            tools:text="The Abyssinian is easy to care for, and a joy to have in your home. They’re affectionate cats and love both people and other animals." />
+            <TextView
+                android:id="@+id/breed_name"
+                style="@style/title"
+                isVisible="@{!viewModel.isLoading()}"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_normal"
+                android:layout_marginTop="@dimen/size_large"
+                android:layout_marginEnd="@dimen/size_normal"
+                android:text="@{viewModel.catBreedDetail.name}"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image"
+                tools:text="Abyssinian" />
 
-        <TextView
-            android:id="@+id/country_code"
-            style="@style/body"
-            isVisible="@{!viewModel.isLoading()}"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/size_normal"
-            android:layout_marginTop="@dimen/size_normal"
-            android:layout_marginEnd="@dimen/size_normal"
-            android:text="@{@string/breed_details_country_code(viewModel.catBreedDetail.countryCode)}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/breed_description"
-            tools:text="EG" />
+            <TextView
+                android:id="@+id/breed_description"
+                style="@style/body"
+                isVisible="@{!viewModel.isLoading()}"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_normal"
+                android:layout_marginTop="@dimen/size_normal"
+                android:layout_marginEnd="@dimen/size_normal"
+                android:text="@{viewModel.catBreedDetail.description}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/breed_name"
+                tools:text="The Abyssinian is easy to care for, and a joy to have in your home. They’re affectionate cats and love both people and other animals." />
 
-        <TextView
-            android:id="@+id/temperament"
-            style="@style/body"
-            isVisible="@{!viewModel.isLoading()}"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/size_normal"
-            android:layout_marginTop="@dimen/size_normal"
-            android:layout_marginEnd="@dimen/size_normal"
-            android:text="@{@string/breed_details_temperament(viewModel.catBreedDetail.temperament)}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/country_code"
-            tools:text="Active, Energetic, Independent, Intelligent, Gentle" />
+            <TextView
+                android:id="@+id/country_code"
+                style="@style/body"
+                isVisible="@{!viewModel.isLoading()}"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_normal"
+                android:layout_marginTop="@dimen/size_normal"
+                android:layout_marginEnd="@dimen/size_normal"
+                android:text="@{@string/breed_details_country_code(viewModel.catBreedDetail.countryCode)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/breed_description"
+                tools:text="EG" />
 
-        <Button
-            android:id="@+id/wiki_link"
-            style="@style/GeneralButton"
-            isVisible="@{!viewModel.isLoading()}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/size_normal"
-            android:layout_marginEnd="@dimen/size_normal"
-            android:layout_marginBottom="@dimen/size_normal"
-            android:text="@string/breed_details_wiki_link"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/temperament"
+                style="@style/body"
+                isVisible="@{!viewModel.isLoading()}"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_normal"
+                android:layout_marginTop="@dimen/size_normal"
+                android:layout_marginEnd="@dimen/size_normal"
+                android:text="@{@string/breed_details_temperament(viewModel.catBreedDetail.temperament)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/country_code"
+                tools:text="Active, Energetic, Independent, Intelligent, Gentle" />
 
-        <ProgressBar
-            android:id="@+id/loading_indicator"
-            isVisible="@{viewModel.isLoading()}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <Button
+                android:id="@+id/wiki_link"
+                style="@style/GeneralButton"
+                isVisible="@{!viewModel.isLoading()}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_normal"
+                android:layout_marginTop="@dimen/size_normal"
+                android:layout_marginEnd="@dimen/size_normal"
+                android:layout_marginBottom="@dimen/size_normal"
+                android:text="@string/breed_details_wiki_link"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/temperament" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ProgressBar
+                android:id="@+id/loading_indicator"
+                isVisible="@{viewModel.isLoading()}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>
